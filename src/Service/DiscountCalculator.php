@@ -6,8 +6,13 @@ class DiscountCalculator
 {
     public function calculateDiscount(float $totalAmount, bool $isVipCustomer): float
     {
-        // Remise de base de 10% si le montant est supérieur à 100 €
-        $discount = ($totalAmount >= 100) ? $totalAmount * 0.10 : 0;
+        // Vérification pour éviter les montants négatifs
+        if ($totalAmount < 0) {
+            throw new \InvalidArgumentException('Le montant total ne peut pas être négatif.');
+        }
+
+        // Modification : La remise de 10% s'applique uniquement si le montant est STRICTEMENT supérieur à 100 €
+        $discount = ($totalAmount > 100) ? $totalAmount * 0.10 : 0.0;
 
         // Remise supplémentaire de 5% pour les clients VIP
         if ($isVipCustomer) {
